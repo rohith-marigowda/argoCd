@@ -8,27 +8,31 @@ agent any
                 branch: 'master'
             }
         }
-    
+
+
+	  stage('Updating Kubernetes deployment file'){
+            steps {
+                sh "cat deployment.yml"
+                sh "sed -i 's/rohithmarigowda/assignment.*/rohithmarigowda/assignment:${DOCKERTAG}/g' deployment.yml"
+                sh "cat deployment.yml"
+            }
+        }
+	  
    stage('Update Deployment File') {
         environment {
             GIT_REPO_NAME = "argoCd"
             GIT_USER_NAME = "rohith-marigowda"
         }
-	 steps {
-            withCredentials([string(credentialsId: 'github', variable: 'GITHUB_TOKEN')]) {
-                sh '''
-                    git config user.email "rohith.marigowda@gmail.com"
-                    //git config user.name "Rohith"
-                    BUILD_NUMBER=${BUILD_NUMBER}
-		    echo "before executing sed command"
-                    sed -i 's+rohithmarigowda/assignment.*+rohithmarigowda/assignment:${DOCKERTAG}+g' deployment.yaml
-		    echo "sed command is executed"
-                    git add .
-                    git commit -m "Update deployment image to version ${BUILD_NUMBER}"
-                    git push https://${GITHUB_TOKEN}@github.com/${GIT_USER_NAME}/${GIT_REPO_NAME} HEAD:main
-                '''
-            }
-        }
+	 script{
+                    sh """
+                    git config --global user.name "Rohith"
+                    git config --global user.email "rohith@gmail.com"
+                    git add deployment.yml
+                    git commit -m 'Updated the deployment file' """
+                    withCredentials([usernamePassword(credentialsId: 'githubcred', passwordVariable: 'pass', usernameVariable: 'user')]) {
+                        sh "git push http://$user:$pass@github.com/kunchalavikram1427/gitops-demo.git master"
+                    }
+                }
 }
 
 	 
