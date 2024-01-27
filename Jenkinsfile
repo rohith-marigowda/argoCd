@@ -20,7 +20,7 @@ agent any
                     git config user.name "Rohith Gowda"
                     BUILD_NUMBER=${BUILD_NUMBER}
 		    echo "before executing sed command"
-                    sed -i 's+rohithmarigowda/assignment.*+rohithmarigowda/assignment:${DOCKERTAG}+g' deployment.yaml
+                    //sed -i 's+rohithmarigowda/assignment.*+rohithmarigowda/assignment:${DOCKERTAG}+g' deployment.yaml
 		    echo "sed command is executed"
                     git add .
                     git commit -m "Update deployment image to version ${BUILD_NUMBER}"
