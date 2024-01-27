@@ -3,7 +3,7 @@ agent any
   stages {
         stage('Checkout SCM'){
             steps {
-		git branch: 'master', changelog: false, poll: false, url: 'https://github.com/rohith-marigowda/argoCd'
+		git 'https://github.com/rohith-marigowda/argoCd'
             }
         }
 
