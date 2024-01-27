@@ -1,10 +1,11 @@
 pipeline {
 agent any
   stages {
-        stage('Git Checkout') {
+        stage('Checkout SCM'){
             steps {
-		    //git 'https://github.com/rohith-marigowda/argoCd.git'
-		    git branch: 'master', url: 'https://github.com/rohith-marigowda/argoCd.git'
+                git credentialsId: 'github', 
+                url: 'https://github.com/rohith-marigowda/argoCd.git',
+                branch: 'master'
             }
         }
     
