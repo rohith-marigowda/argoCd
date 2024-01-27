@@ -19,6 +19,7 @@ agent any
                     git config user.email "rohith.marigowda@gmail.com"
                     git config user.name "Rohith Gowda"
                     BUILD_NUMBER=${BUILD_NUMBER}
+		    echo "before executing sed command"
                     sed -i 's+rohithmarigowda/assignment.*+rohithmarigowda/assignment:${DOCKERTAG}+g' deployment.yaml
 		    echo "sed command is executed"
                     git add .
