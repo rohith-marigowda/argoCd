@@ -17,7 +17,7 @@ agent any
             withCredentials([string(credentialsId: 'github', variable: 'GITHUB_TOKEN')]) {
                 sh '''
                     git config user.email "rohith.marigowda@gmail.com"
-                    git config user.name "Rohith Gowda"
+                    git config user.name "Rohith"
                     BUILD_NUMBER=${BUILD_NUMBER}
 		    echo "before executing sed command"
                     //sed -i 's+rohithmarigowda/assignment.*+rohithmarigowda/assignment:${DOCKERTAG}+g' deployment.yaml
