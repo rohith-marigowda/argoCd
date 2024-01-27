@@ -8,27 +8,26 @@ agent any
             }
         }
     
-  stage('Update GIT') {
-	  steps{
-
-		  script {
-                catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
-                    withCredentials([usernamePassword(credentialsId: 'github', passwordVariable: 'GIT_PASSWORD', usernameVariable: 'GIT_USERNAME')]) {
-                        //def encodedPassword = URLEncoder.encode("$GIT_PASSWORD",'UTF-8')
-                        sh "git config user.email rohith.marigowda@gmail.com"
-                        sh "git config user.name Rohith Gowda"
-                        //sh "git switch master"
-                        sh "cat deployment.yaml"
-                        sh "sed -i 's+rohithmarigowda/assignment.*+rohithmarigowda/assignment:${DOCKERTAG}+g' deployment.yaml"
-                        sh "cat deployment.yaml"
-                        sh "git add ."
-                        sh "git commit -m 'Done by Jenkins Job changemanifest: ${env.BUILD_NUMBER}'"
-                        sh "git push https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/${GIT_USERNAME}/kubernetesmanifest.git HEAD:main"
-      }
-    }
-  }
-	  }
-            
+   stage('Update Deployment File') {
+        environment {
+            GIT_REPO_NAME = "argoCd"
+            GIT_USER_NAME = "rohith-marigowda"
+        }
+	 steps {
+            withCredentials([string(credentialsId: 'github', variable: 'GITHUB_TOKEN')]) {
+                sh '''
+                    git config user.email "abhishek.xyz@gmail.com"
+                    git config user.name "Abhishek Veeramalla"
+                    BUILD_NUMBER=${BUILD_NUMBER}
+                    sed -i 's+rohithmarigowda/assignment.*+rohithmarigowda/assignment:${DOCKERTAG}+g' deployment.yaml
+                    git add .
+                    git commit -m "Update deployment image to version ${BUILD_NUMBER}"
+                    git push https://${GITHUB_TOKEN}@github.com/${GIT_USER_NAME}/${GIT_REPO_NAME} HEAD:main
+                '''
+            }
+        }
 }
+
+	 
   }
 }
