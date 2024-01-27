@@ -10,7 +10,7 @@ agent any
 
 	  stage('Updating Kubernetes deployment file'){
             steps {
-		sh    pwd
+		sh  pwd
                 sh "cat deployment.yml"
                 sh "sed -i 's/rohithmarigowda/assignment.*/rohithmarigowda/assignment:${DOCKERTAG}/g' deployment.yml"
                 sh "cat deployment.yml"
