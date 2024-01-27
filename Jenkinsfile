@@ -4,7 +4,7 @@ agent any
         stage('Git Checkout') {
             steps {
 		    //git 'https://github.com/rohith-marigowda/argoCd.git'
-		    git branch: 'main', changelog: false, poll: false, url: 'https://github.com/rohith-marigowda/argoCd'
+		    sh 'git clone https://github.com/rohith-marigowda/argoCd.git'
             }
         }
     
