@@ -29,7 +29,7 @@ agent any
                     git add deployment.yaml
                     git commit -m 'Updated the deployment file' """
                     withCredentials([usernamePassword(credentialsId: 'githubcred', passwordVariable: 'pass', usernameVariable: 'user')]) {
-                        sh "git push"
+                        sh "git push --set-upstream origin master"
                     }
                 }
 	   }
