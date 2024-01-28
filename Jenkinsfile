@@ -20,19 +20,23 @@ agent any
             }
         }
 	  
-   stage('Update Deployment File') {
+stage('Update Deployment File') {
 	   steps{
 		script{
+				catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+					withCredentials([usernamePassword(credentialsId: 'github', passwordVariable: 'GIT_PASSWORD', usernameVariable: 'GIT_USERNAME')]) {
                     sh """
                     git config --global user.name "Rohith"
                     git config --global user.email "rohith@gmail.com"
                     git add deployment.yaml
                     git commit -m 'Updated the deployment file' """
-                    withCredentials([usernamePassword(credentialsId: 'githubcred', passwordVariable: 'pass', usernameVariable: 'user')]) {
-                	sh "git push https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/${GIT_USERNAME}/kubernetesmanifest.git HEAD:master"
-                    }
-                }
+                	sh "git push https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/${GIT_USERNAME}/kubernetesmanifest.git HEAD:master"        
+					}
+				}
+			}
 	   }
    }
+
+	  
   }
 }
