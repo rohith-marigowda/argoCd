@@ -21,21 +21,33 @@ agent any
         }
 	  
 stage('Update Deployment File') {
-	   steps{
-		script{
-			catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
-			withCredentials([usernamePassword(credentialsId: 'githubcred', passwordVariable: 'GIT_PASSWORD', usernameVariable: 'GIT_USERNAME')]) {
+    steps {
+        script {
+            catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+                withCredentials([usernamePassword(credentialsId: 'githubcred', passwordVariable: 'GIT_PASSWORD', usernameVariable: 'GIT_USERNAME')]) {
+
+                    // 1. Create a new feature branch
+                    sh "git checkout -b feature/argoCdCiCd"
+
+                    // 2. Commit your changes to the feature branch
                     sh """
                     git config --global user.name "Rohith"
                     git config --global user.email "rohith@gmail.com"
                     git add deployment.yaml
-                    git commit -m 'Updated the deployment file' """
-                	sh "git push https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/${GIT_USERNAME}/argoCd.git HEAD:master"        
-					}
-				}
-			}
-	   }
-   }
+                    git commit -m 'Updated the deployment file'
+                    """
+
+                    // 3. Push the feature branch to the remote repository
+                    sh "git push origin feature/argoCdCiCd"
+
+                    // 4. Create a pull request from the feature branch to the target branch
+                    sh "curl -X POST -H 'Authorization: token ${GIT_PASSWORD}' -d '{\"title\":\"Update Deployment File\",\"head\":\"feature-branch\",\"base\":\"master\"}' https://api.github.com/repos/${GIT_USERNAME}/argoCd/pulls"
+                }
+            }
+        }
+    }
+}
+
 
 }
 }
