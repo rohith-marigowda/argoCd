@@ -38,22 +38,19 @@ stage('Update Deployment File') {
                     // 3. Push the feature branch to the remote repository
                     sh "git push origin feature/argoCdCiCd"
 
-                    // 4. Create a pull request from the feature branch to the target branch
-                    def apiUrl = "https://api.github.com/repos/${GIT_USERNAME}/argoCd/pulls"
-                    def title = "Update Deployment File"
-                    def head = argoCdCiCd
-                    def base = "master"
-
+                    // 4. Prepare a JSON file with the pull request data
+                    def jsonFilePath = "${env.WORKSPACE}/pull_request_data.json"
                     sh """
-                    curl -X POST \
-                        -H 'Authorization: token ${GIT_PASSWORD}' \
-                        -d '{
-                            "title": "${title}",
-                            "head": "${head}",
-                            "base": "${base}"
-                        }' \
-                        ${apiUrl}
+                    echo '{
+                        "title": "Update Deployment File",
+                        "head": "${argoCdCiCd}",
+                        "base": "master"
+                    }' > ${jsonFilePath}
                     """
+
+                    // 5. Create a pull request from the feature branch to the target branch
+                    def apiUrl = "https://api.github.com/repos/${GIT_USERNAME}/argoCd/pulls"
+                    sh "curl -X POST -H 'Authorization: token ${GIT_PASSWORD}' -d @${jsonFilePath} ${apiUrl}"
                 }
             }
         }
