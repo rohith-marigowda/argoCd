@@ -12,8 +12,7 @@ agent any
             steps {
 		    script{
 			sh "echo $JOB_NAME"
-			sh "cd /var/lib/jenkins/workspace/$JOB_NAME"
-                	sh "cat deployment.yml"
+			sh "cat /var/lib/jenkins/workspace/$JOB_NAME/deployment.yml"
                 	sh "sed -i 's/rohithmarigowda/assignment.*/rohithmarigowda/assignment:${DOCKERTAG}/g' /var/lib/jenkins/workspace/$JOB_NAME/deployment.yml"
                 	sh "cat deployment.yml"
 		    }
