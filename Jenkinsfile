@@ -23,8 +23,8 @@ agent any
 stage('Update Deployment File') {
 	   steps{
 		script{
-				catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
-					withCredentials([usernamePassword(credentialsId: 'github', passwordVariable: 'GIT_PASSWORD', usernameVariable: 'GIT_USERNAME')]) {
+			catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+			withCredentials([usernamePassword(credentialsId: 'githubcred', passwordVariable: 'GIT_PASSWORD', usernameVariable: 'GIT_USERNAME')]) {
                     sh """
                     git config --global user.name "Rohith"
                     git config --global user.email "rohith@gmail.com"
@@ -37,6 +37,5 @@ stage('Update Deployment File') {
 	   }
    }
 
-	  
-  }
+}
 }
