@@ -38,27 +38,15 @@ stage('Update Deployment File') {
                     // 3. Push the feature branch to the remote repository
                     sh "git push origin feature/argoCdCiCd"
 
-                   // 4. Prepare a JSON file with the pull request data
-                    def jsonFilePath = "${env.WORKSPACE}/pull_request_data.json"
-                    sh """
-                    echo '{
-                        "title": "Update Deployment File",
-                        "head": "${argoCdCiCd}",
-                        "base": "master"
-                    }' > ${jsonFilePath}
-                    """
-
-                    // 5. Create a pull request from the feature branch to the target branch using GitHub API
-                    def apiUrl = "https://api.github.com/repos/${GIT_USERNAME}/argoCd/pulls"
-                    def curlCommand = """
-                        curl -X POST \
-                            -H 'Authorization: token ${GIT_PASSWORD}' \
-                            -d @${jsonFilePath} \
-                            ${apiUrl}
-                    """
-                    
-                    // Execute the curl command
-                    sh curlCommand
+                  // 4. Trigger the GitHub Pull Request Builder job
+                    def ghprbJob = 'updatemanifest'  // Replace with your GitHub Pull Request Builder job name
+                    build job: ghprbJob, parameters: [
+                        string(name: 'ghprbSourceBranch', value: argoCdCiCd),
+                        string(name: 'ghprbTargetBranch', value: 'master'),
+                        string(name: 'ghprbTitle', value: 'Update Deployment File'),
+                        string(name: 'GIT_USERNAME', value: GIT_USERNAME),
+                        password(name: 'GIT_PASSWORD', value: GIT_PASSWORD)
+                    ]
                 }
             }
         }
