@@ -5,6 +5,7 @@ agent any
             steps {
 		git 'https://github.com/rohith-marigowda/argoCd'
 		// 1. Create a new feature branch
+		sh "git branch -D feature/argoCdCiCd"
 		sh "git checkout -b feature/argoCdCiCd"
             }
         }
