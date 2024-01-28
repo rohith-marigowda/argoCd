@@ -16,7 +16,7 @@ spec:
         - name: my-docker-registry-secret
       containers:
         - name: tomcat-with-k8s
-          image: rohithmarigowda/assignment:latest
+          image: rohithmarigowda/assignment:29
           imagePullPolicy: Always
           ports:
             - containerPort: 8080 # The port that the container is running on in the cluster
