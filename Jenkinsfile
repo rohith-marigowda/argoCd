@@ -39,7 +39,12 @@ stage('Update Deployment File') {
                     sh "git push origin feature/argoCdCiCd"
 
                     // 4. Create a pull request from the feature branch to the target branch
-                    sh "curl -X POST -H 'Authorization: token ${GIT_PASSWORD}' -d '{\"title\":\"Update Deployment File\",\"head\":\"argoCdCiCd\",\"base\":\"master\"}' https://api.github.com/repos/${GIT_USERNAME}/argoCd/pulls"
+                    sh """
+                    curl -X POST \
+                        -H 'Authorization: token ${GIT_PASSWORD}' \
+                        -d '{"title":"Update Deployment File","head":"${argoCdCiCd}","base":"master"}' \
+                        https://api.github.com/repos/${GIT_USERNAME}/argoCd/pulls
+                    """
                 }
             }
         }
