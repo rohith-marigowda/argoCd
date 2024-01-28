@@ -4,6 +4,7 @@ agent any
         stage('Checkout SCM'){
             steps {
 		git 'https://github.com/rohith-marigowda/argoCd'
+		sh "echo printing docker tag $DOCKERTAG"
             }
         }
 
@@ -12,7 +13,6 @@ agent any
             steps {
 		    script{
 			sh "echo $JOB_NAME"
-			sh "echo $DOCKERTAG"
 			sh "cat deployment.yaml"
                 	sh "sed -i 's/rohithmarigowda/assignment.*/rohithmarigowda/assignment:${DOCKERTAG}/g' deployment.yaml"
                 	sh "cat deployment.yaml"
