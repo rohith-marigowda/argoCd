@@ -12,6 +12,7 @@ agent any
             steps {
 		    script{
 			sh "echo $JOB_NAME"
+			sh "echo $DOCKERTAG"
 			sh "cat deployment.yaml"
                 	sh "sed -i 's/rohithmarigowda/assignment.*/rohithmarigowda/assignment:${DOCKERTAG}/g' deployment.yaml"
                 	sh "cat deployment.yaml"
