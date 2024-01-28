@@ -46,6 +46,7 @@ stage('Update Deployment File') {
                         string(name: 'ghprbTitle', value: 'Update Deployment File'),
                         string(name: 'GIT_USERNAME', value: GIT_USERNAME),
                         password(name: 'GIT_PASSWORD', value: GIT_PASSWORD)
+			    ]
                 }
             }
         }
