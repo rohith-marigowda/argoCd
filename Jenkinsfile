@@ -12,8 +12,8 @@ agent any
             steps {
 		    script{
 			sh "echo $JOB_NAME"
-			sh "cat /var/lib/jenkins/workspace/$JOB_NAME/deployment.yml"
-                	sh "sed -i 's/rohithmarigowda/assignment.*/rohithmarigowda/assignment:${DOCKERTAG}/g' /var/lib/jenkins/workspace/$JOB_NAME/deployment.yml"
+			//sh "cat /var/lib/jenkins/workspace/$JOB_NAME/deployment.yml"
+                	sh "sed -i 's/rohithmarigowda/assignment.*/rohithmarigowda/assignment:${DOCKERTAG}/g' deployment.yaml"
                 	sh "cat deployment.yml"
 		    }
             }
@@ -25,7 +25,7 @@ agent any
                     sh """
                     git config --global user.name "Rohith"
                     git config --global user.email "rohith@gmail.com"
-                    git add deployment.yml
+                    git add deployment.yaml
                     git commit -m 'Updated the deployment file' """
                     withCredentials([usernamePassword(credentialsId: 'githubcred', passwordVariable: 'pass', usernameVariable: 'user')]) {
                         sh "git push http://$user:$pass@github.com/rohith-marigowda/argoCd.git master"
