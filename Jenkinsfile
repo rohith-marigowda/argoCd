@@ -4,7 +4,8 @@ agent any
         stage('Checkout SCM'){
             steps {
 		git 'https://github.com/rohith-marigowda/argoCd'
-		sh "echo printing docker tag $DOCKERTAG"
+		// 1. Create a new feature branch
+		sh "git checkout -b feature/argoCdCiCd"
             }
         }
 
@@ -12,7 +13,6 @@ agent any
 	  stage('Updating Kubernetes deployment file'){
             steps {
 		    script{
-			sh "echo $JOB_NAME"
 			sh "cat deployment.yaml"
 			sh "sed -i 's#rohithmarigowda/assignment.*#rohithmarigowda/assignment:${DOCKERTAG}#g' deployment.yaml"
                 	sh "cat deployment.yaml"
@@ -25,9 +25,6 @@ stage('Update Deployment File') {
         script {
             catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
                 withCredentials([usernamePassword(credentialsId: 'githubcred', passwordVariable: 'GIT_PASSWORD', usernameVariable: 'GIT_USERNAME')]) {
-
-                    // 1. Create a new feature branch
-                    sh "git checkout -b feature/argoCdCiCd"
 
                     // 2. Commit your changes to the feature branch
                     sh """
