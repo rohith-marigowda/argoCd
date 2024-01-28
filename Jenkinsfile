@@ -30,7 +30,7 @@ stage('Update Deployment File') {
                     git config --global user.email "rohith@gmail.com"
                     git add deployment.yaml
                     git commit -m 'Updated the deployment file' """
-                	sh "git push https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/${GIT_USERNAME}/kubernetesmanifest.git HEAD:master"        
+                	sh "git push https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/${GIT_USERNAME}/argoCd.git HEAD:master"        
 					}
 				}
 			}
